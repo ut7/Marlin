@@ -396,7 +396,7 @@ sym: $(BUILD_DIR)/$(TARGET).sym
 
 # Program the device.
 # Do not try to reset an arduino if it's not one
-upload: $(BUILD_DIR)/$(TARGET).hex
+upload: hex
 ifeq (${AVRDUDE_PROGRAMMER}, arduino)
 	stty hup < $(UPLOAD_PORT); true
 endif
@@ -456,7 +456,7 @@ $(BUILD_DIR)/$(TARGET).elf: $(OBJ) Configuration.h
 	$(Pecho) "  CXX   $@"
 	$P $(CC) $(ALL_CXXFLAGS) -Wl,--gc-sections -o $@ -L. $(OBJ) $(LDFLAGS)
 
-$(BUILD_DIR)/%.o: %.c Configuration.h Configuration_adv.h $(MAKEFILE)
+$(BUILD_DIR)/%.o: %.c Configuration.h Configuration_adv.h $(MAKEFILE) $(BUILD_DIR)
 	$(Pecho) "  CC    $<"
 	$P $(CC) -MMD -c $(ALL_CFLAGS) $< -o $@
 
