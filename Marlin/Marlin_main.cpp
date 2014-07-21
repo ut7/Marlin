@@ -1667,7 +1667,7 @@ void process_commands()
     }
     break;
 #endif
-    case 17:
+    case 17: // M17
         LCD_MESSAGEPGM(MSG_NO_MOVE);
         enable_x();
         enable_y();
@@ -1838,7 +1838,7 @@ void process_commands()
 #endif
       setWatch();
       break;
-    case 112: //  M112 -Emergency Stop
+    case 112: // M112 -Emergency Stop
       kill();
       break;
     case 140: // M140 set bed temp
@@ -1908,8 +1908,8 @@ void process_commands()
         SERIAL_PROTOCOLLN("");
       return;
       break;
-    case 109:
-    {// M109 - Wait for extruder heater to reach target.
+    case 109: // M109 - Wait for extruder heater to reach target.
+    {
       if(setTargetedHotend(109)){
         break;
       }
@@ -2128,13 +2128,13 @@ void process_commands()
       #endif
 	  break;
 
-    case 82:
+    case 82: // M82
       axis_relative_modes[3] = false;
       break;
-    case 83:
+    case 83: // M83
       axis_relative_modes[3] = true;
       break;
-    case 18: //compatibility
+    case 18: // M18 compatibility
     case 84: // M84
       if(code_seen('S')){
         stepper_inactive_time = code_value() * 1000;
@@ -2325,7 +2325,7 @@ void process_commands()
         if(code_seen('T')) retract_acceleration = code_value() ;
       }
       break;
-    case 205: //M205 advanced settings:  minimum travel speed S=while printing T=travel only,  B=minimum segment time X= maximum xy jerk, Z=maximum Z jerk
+    case 205: // M205 advanced settings:  minimum travel speed S=while printing T=travel only,  B=minimum segment time X= maximum xy jerk, Z=maximum Z jerk
     {
       if(code_seen('S')) minimumfeedrate = code_value();
       if(code_seen('T')) mintravelfeedrate = code_value();
@@ -2363,7 +2363,7 @@ void process_commands()
       break;
     #endif
     #ifdef FWRETRACT
-    case 207: //M207 - set retract length S[positive mm] F[feedrate mm/min] Z[additional zlift/hop]
+    case 207: // M207 - set retract length S[positive mm] F[feedrate mm/min] Z[additional zlift/hop]
     {
       if(code_seen('S'))
       {
@@ -2677,7 +2677,7 @@ void process_commands()
     break;
 #endif
     #ifdef PREVENT_DANGEROUS_EXTRUDE
-    case 302: // allow cold extrudes, or set the minimum extrude temperature
+    case 302: // M302 allow cold extrudes, or set the minimum extrude temperature
     {
 	  float temp = .0;
 	  if (code_seen('S')) temp=code_value();
@@ -2704,13 +2704,13 @@ void process_commands()
     }
     break;
 #if defined(ENABLE_AUTO_BED_LEVELING) && defined(SERVO_ENDSTOPS)
-    case 401:
+    case 401: // M401
     {
         engage_z_probe();    // Engage Z Servo endstop if available
     }
     break;
 
-    case 402:
+    case 402: // M402
     {
         retract_z_probe();    // Retract Z Servo endstop if enabled
     }
@@ -2737,7 +2737,7 @@ void process_commands()
     }
     break;
     #ifdef ABORT_ON_ENDSTOP_HIT_FEATURE_ENABLED
-    case 540:
+    case 540: // M540
     {
         if(code_seen('S')) abort_on_endstop_hit = code_value() > 0;
     }
@@ -2745,7 +2745,7 @@ void process_commands()
     #endif
 
     #ifdef CUSTOM_M_CODE_SET_Z_PROBE_OFFSET
-    case CUSTOM_M_CODE_SET_Z_PROBE_OFFSET:
+    case CUSTOM_M_CODE_SET_Z_PROBE_OFFSET: // M_CODE_SET_Z_PROBE_OFFSET
     {
       float value;
       if (code_seen('Z'))
@@ -3018,7 +3018,7 @@ void process_commands()
       #endif
     }
     break;
-    case 999: // M999: Restart after being stopped
+    case 999: // M999 Restart after being stopped
       Stopped = false;
       lcd_reset_alert_level();
       gcode_LastN = Stopped_gcode_LastN;
